@@ -20,6 +20,7 @@ public class InstallPackageSettings extends ListActivity {
     private static final String TAG = "InstallPackageSettings";
     private Context mContext;
     private final static int KEY_1 = 0;
+    String path = "/sdcard/ota.zip";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class InstallPackageSettings extends ListActivity {
 
     protected List<Map<String, Object>> getData() {
         List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
-        addItem(myData, "InstallPackage", KEY_1);
+        addItem(myData, "InstallPackage:" + path, KEY_1);
         return myData;
     }
 
@@ -48,9 +49,8 @@ public class InstallPackageSettings extends ListActivity {
         int key = (int) map.get("key");
         switch (key) {
         case KEY_1:
-            String path = "/sdcard/update.zip";
             File file = new File(path);
-            if(!file.exists()) {
+            if (!file.exists()) {
                 Toast.makeText(mContext, "no such file", Toast.LENGTH_SHORT).show();
             } else {
                 MainApp.getCustomApi().installPackage(path);

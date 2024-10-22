@@ -52,12 +52,12 @@ public class ExecSuCmdSettings extends ListActivity {
 
         switch (key) {
         case KEY_1:
-            String val = MainApp.getCustomApi().execSuCmd("ip link set can0 type can bitrate 200000");
+            String val = MainApp.getCustomApi().execSuCmd("cat /system/build.prop");
             Toast.makeText(mContext, val, Toast.LENGTH_SHORT).show();
             break;
         case KEY_2:
-            MainApp.getCustomApi().execSuCmd("ip link set can0 up");
-            Toast.makeText(mContext, "finish", Toast.LENGTH_SHORT).show();
+            MainApp.getCustomApi().execSuCmd("screencap -p /sdcard/screenshot.png");
+            Toast.makeText(mContext, "finish:/sdcard/screenshot.png", Toast.LENGTH_SHORT).show();
             break;
         default:
             break;

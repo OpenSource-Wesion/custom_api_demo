@@ -50,7 +50,7 @@ public class UartSettings2 extends Activity implements SerialPortDataCallBack  {
             public void onClick(View v) {
                 if(serialPortUtil != null) {
                     serialPortUtil.closeSerialPort();
-                    mInfoView.append("close");
+                    mInfoView.append("\nclose");
                 }
                 serialPortUtil = null;
             }

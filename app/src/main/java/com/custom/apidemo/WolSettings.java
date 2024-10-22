@@ -10,7 +10,6 @@ public class WolSettings extends Activity {
     private static final String TAG = WolSettings.class.getSimpleName();
     private RadioGroup wol_group;
     private RadioButton on_Button,  off_Button;
-    //private TextView textView_wol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

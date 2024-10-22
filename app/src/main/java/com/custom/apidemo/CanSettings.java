@@ -68,7 +68,7 @@ public class CanSettings extends Activity {
                 buf[5] = (byte)0x55;
                 buf[6] = (byte)0x66;
                 buf[7] = (byte)0x77;
-                int ret = customCan0.writeCan(0x123, 0, 0, 8, buf);
+                int ret = customCan0.writeCan(0x01A, 0, 0, 8, buf);
             }
         });
     }
@@ -78,8 +78,8 @@ public class CanSettings extends Activity {
         @Override
         public void run() {
             while (isStart) {
-                if(customCan0 != null) {
-                    long[] data = customCan0.readCan();
+                if(customCan1 != null) {
+                    long[] data = customCan1.readCan();
                     if(data != null) {
                         for (int i = 0; i < data.length; i++) {
                             Log.e(TAG, "data[" + i + "] " + Long.toHexString(data[i]));
@@ -124,6 +124,7 @@ public class CanSettings extends Activity {
                                 mInfoView.setText(dateFormat.format(date) + " " + CanStr);
                             }
                         });
+
                     }
                 }
             }

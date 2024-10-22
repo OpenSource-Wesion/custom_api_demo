@@ -15,28 +15,24 @@ public class I2cSettings extends Activity implements OnClickListener {
     private static final String TAG = "I2cSettings";
     private Context mContext;
     Button i2c_read_btn, i2c_write_btn;
-    TextView i2c_read_tv, i2c_write_tv;
-    EditText i2c_text;
+    EditText etAddr, etValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.i2c_main);
         mContext = this;
-        i2c_text = (EditText)findViewById(R.id.i2c_text);
+        etAddr = (EditText)findViewById(R.id.et_addr);
+        etValue = (EditText)findViewById(R.id.et_val);
 
         i2c_read_btn = (Button)findViewById(R.id.i2c_read_btn);
-        i2c_read_tv = (TextView)findViewById(R.id.i2c_read_tv);
         i2c_write_btn = (Button)findViewById(R.id.i2c_write_btn);
-        i2c_write_tv = (TextView)findViewById(R.id.i2c_write_tv);
 
         i2c_read_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isInteger(i2c_text.getText().toString())) {
-                    i2c_read_tv.setText(String.valueOf(MainApp.getCustomApi().i2cReadByteData(4, 0x0e, Integer.valueOf(i2c_text.getText().toString()))));
-                } else {
-                    i2c_read_tv.setText("not int");
+                if(isInteger(etAddr.getText().toString())) {
+                    etValue.setText(String.valueOf(MainApp.getCustomApi().i2cReadByteData(4, 0x41, Integer.valueOf(etAddr.getText().toString()))));
                 }
             }
         });
@@ -44,15 +40,12 @@ public class I2cSettings extends Activity implements OnClickListener {
         i2c_write_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isInteger(i2c_text.getText().toString())) {
-                    MainApp.getCustomApi().i2cWriteByteData(4, 0x0e, 0x60, Integer.valueOf(i2c_text.getText().toString()));
-                    i2c_write_tv.setText(String.valueOf(MainApp.getCustomApi().i2cReadByteData(4, 0x0e, 0x60)));
-                } else {
-                    i2c_write_tv.setText("not int");
+                if (isInteger(etAddr.getText().toString()) && isInteger(etValue.getText().toString())) {
+                    MainApp.getCustomApi().i2cWriteByteData(4, 0x41, Integer.valueOf(etAddr.getText().toString()), Integer.valueOf(etValue.getText().toString()));
+                    etValue.setText(String.valueOf(MainApp.getCustomApi().i2cReadByteData(4, 0x41, Integer.valueOf(etAddr.getText().toString()))));
                 }
             }
         });
-
     }
 
     public static boolean isInteger(String str) {

@@ -8,37 +8,37 @@
         android:id="@+id/systemproperties_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test" />
+        android:text="test"/>
+
+    <TextView
+        android:id="@+id/read_systemproperties_int_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/read_systemproperties_int_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 			android:textAllCaps="false"
-            android:text="read int" />
+            android:text="read int"/>
 
-        <TextView
-            android:id="@+id/read_systemproperties_int_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-			
         <Button
-            android:id="@+id/read_systemproperties_string_btn"
+            android:id="@+id/write_systemproperties_int_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-			android:textAllCaps="false"
-            android:text="read string" />
-
-        <TextView
-            android:id="@+id/read_systemproperties_string_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />			
+            android:textAllCaps="false"
+            android:text="write systemproperties int"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/read_systemproperties_string_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -46,23 +46,18 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/write_systemproperties_int_btn"
+            android:id="@+id/read_systemproperties_string_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-			android:textAllCaps="false"
-            android:text="write systemproperties int" />
+            android:textAllCaps="false"
+            android:text="read string"/>
 
         <Button
             android:id="@+id/write_systemproperties_string_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-			android:textAllCaps="false"
-            android:text="write systemproperties string" />
-
-        <TextView
-            android:id="@+id/write_systemproperties_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textAllCaps="false"
+            android:text="write systemproperties string"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -47,8 +47,8 @@ public class CustomBroadcast extends ListActivity {
     protected List<Map<String, Object>> getData() {
         List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
         addItem(myData, "Update time", KEY_UPDATE_TIME);
-        addItem(myData, "Silent install", KEY_SILENT_INSTALL);
-        addItem(myData, "Silent uninstall", KEY_SILENT_UNINSTALL);
+        addItem(myData, "Silent install:/sdcard/test.apk", KEY_SILENT_INSTALL);
+        addItem(myData, "Silent uninstall:com.androits.gps.test.pro", KEY_SILENT_UNINSTALL);
         addItem(myData, "Reboot", KEY_REBOOT);
         addItem(myData, "Shutdown", KEY_SHUTDOWN);
         addItem(myData, "Sleep", KEY_SLEEP);
@@ -57,9 +57,9 @@ public class CustomBroadcast extends ListActivity {
         addItem(myData, "Hide statusbar", KEY_HIDE_STATUSBAR);
         addItem(myData, "Show navibar", KEY_SHOW_NAVIBAR);
         addItem(myData, "Hide navibar", KEY_HIDE_NAVIBAR);
-        addItem(myData, "OTA update", KEY_OTA_UPDATE);
-        addItem(myData, "Display pos", KEY_DISPLAY_POS);
-        addItem(myData, "Set systemprop", KEY_SET_SYSPROP);
+        addItem(myData, "OTA update:/sdcard/ota.zip", KEY_OTA_UPDATE);
+        addItem(myData, "Display pos:POS 0", KEY_DISPLAY_POS);
+        addItem(myData, "Set systemprop name:persist.sys.customAPITest value:customAPI", KEY_SET_SYSPROP);
         return myData;
     }
 
@@ -126,7 +126,7 @@ public class CustomBroadcast extends ListActivity {
             break;
         case KEY_OTA_UPDATE:
             Intent otaUpdateIntent = new Intent("com.custom.action.OTA_UPDATE");
-            otaUpdateIntent.putExtra("path", "/sdcard/a10_3588-android-13-v20240607-ota.zip");
+            otaUpdateIntent.putExtra("path", "/sdcard/ota.zip");
             sendBroadcast(otaUpdateIntent);
             break;
         case KEY_DISPLAY_POS:
@@ -136,8 +136,8 @@ public class CustomBroadcast extends ListActivity {
             break;
         case KEY_SET_SYSPROP:
             Intent setSysPropIntent = new Intent("com.custom.action.SET_SYSPROPS");
-            setSysPropIntent.putExtra("name", "persist.sys.test");
-            setSysPropIntent.putExtra("value", "setprop_test");
+            setSysPropIntent.putExtra("name", "persist.sys.customAPITest");
+            setSysPropIntent.putExtra("value", "customAPI");
             sendBroadcast(setSysPropIntent);
             break;
         default:

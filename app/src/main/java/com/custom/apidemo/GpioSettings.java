@@ -18,7 +18,7 @@ public class GpioSettings extends Activity {
     Button write_gpio_1_btn, write_gpio_0_btn;
     Button set_gpio_in_btn, set_gpio_out_btn;
     Button req_gpio_btn, free_gpio_btn;
-    TextView write_gpio_tv;
+    TextView gpio_showInfo;
     EditText gpio_text;
 
     @Override
@@ -36,13 +36,14 @@ public class GpioSettings extends Activity {
         read_gpio_tv = (TextView)findViewById(R.id.read_gpio_tv);
         write_gpio_0_btn = (Button)findViewById(R.id.write_gpio_0_btn);
         write_gpio_1_btn = (Button)findViewById(R.id.write_gpio_1_btn);
-        write_gpio_tv = (TextView)findViewById(R.id.write_gpio_tv);
+        gpio_showInfo = (TextView) findViewById(R.id.gpio_showInfo);
 
         req_gpio_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean ok = MainApp.getCustomApi().gpioRequest(Integer.parseInt(gpio_text.getText().toString()));
                 Log.e(TAG, "gpioRequest " + ok);
+                gpio_showInfo.setText("gpioRequest " + ok);
             }
         });
 
@@ -51,6 +52,7 @@ public class GpioSettings extends Activity {
             public void onClick(View v) {
                 boolean ok = MainApp.getCustomApi().gpioSetDirection(Integer.parseInt(gpio_text.getText().toString()), "in");
                 Log.e(TAG, "gpioSetDirection " + ok);
+                gpio_showInfo.setText("gpioSetDirection input " + ok);
             }
         });
 
@@ -59,6 +61,7 @@ public class GpioSettings extends Activity {
             public void onClick(View v) {
                 boolean ok = MainApp.getCustomApi().gpioSetDirection(Integer.parseInt(gpio_text.getText().toString()), "out");
                 Log.e(TAG, "gpioSetDirection " + ok);
+                gpio_showInfo.setText("gpioSetDirection output " + ok);
             }
         });
 
@@ -67,6 +70,7 @@ public class GpioSettings extends Activity {
             public void onClick(View v) {
                 int value  = MainApp.getCustomApi().gpioGetValue(Integer.parseInt(gpio_text.getText().toString()));
                 Log.e(TAG, "gpioGetValue " + value);
+                gpio_showInfo.setText("gpioGetValue " + value);
             }
         });
 
@@ -75,6 +79,7 @@ public class GpioSettings extends Activity {
             public void onClick(View v) {
                 boolean ok = MainApp.getCustomApi().gpioSetValue(Integer.parseInt(gpio_text.getText().toString()), 0);
                 Log.e(TAG, "gpioSetValue 0 " + ok);
+                gpio_showInfo.setText("gpioSetValue 0 " + ok);
             }
         });
 
@@ -83,6 +88,7 @@ public class GpioSettings extends Activity {
             public void onClick(View v) {
                 boolean ok = MainApp.getCustomApi().gpioSetValue(Integer.parseInt(gpio_text.getText().toString()), 1);
                 Log.e(TAG, "gpioSetValue 1 " + ok);
+                gpio_showInfo.setText("gpioSetValue 1 " + ok);
             }
         });
 
@@ -91,6 +97,7 @@ public class GpioSettings extends Activity {
             public void onClick(View v) {
                 boolean ok = MainApp.getCustomApi().gpioFree(Integer.parseInt(gpio_text.getText().toString()));
                 Log.e(TAG, "gpioFree " + ok);
+                gpio_showInfo.setText("gpioFree " + ok);
             }
         });
 
