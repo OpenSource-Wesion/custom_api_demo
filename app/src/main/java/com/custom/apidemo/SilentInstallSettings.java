@@ -1,5 +1,6 @@
 package com.custom.apidemo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,126 +14,82 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.custom.ICustomApiCallBack;
 
-public class SilentInstallSettings extends ListActivity {
+public class SilentInstallSettings extends Activity implements View.OnClickListener {
     private static final String TAG = "SilentInstallSettings";
-    private Context mContext;
-    private final static int KEY_1 = 0;
-    private final static int KEY_2 = 1;
-    private final static int KEY_3 = 3;
-    private final int MSG_OK =  82;
-    private final int MSG_ERROR = 83;
-    public static int install_flag = 0;
-    private static final String apkPath = "/sdcard/test.apk";
-    Handler mHandler = new InstallHandler();
+    private Button btnInstall;
+    private Button btnInstallLaunch;
+    private Button btnUninstall;
+    private EditText etApkPath;
+    private EditText etPkgName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = this;
-        setListAdapter(new SimpleAdapter(this, getData(), android.R.layout.simple_list_item_1, new String[] { "title" }, new int[] { android.R.id.text1 }));
-        new Thread() {
-            public void run() {
-                install_Thread();
+        setContentView(R.layout.silentinstall_main);
+
+        etApkPath = (EditText)findViewById(R.id.et_apkPath);
+        etPkgName = (EditText)findViewById(R.id.et_pkgName);
+
+        btnInstall = (Button) findViewById(R.id.btn_install);
+        btnInstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean ret = MainApp.getCustomApi().silentInstall(etApkPath.getText().toString());
+                Log.e(TAG, "btnInstall ret " + ret);
+                if (ret) {
+                    Toast.makeText(SilentInstallSettings.this, "install finish success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SilentInstallSettings.this, "install finish error", Toast.LENGTH_SHORT).show();
+                }
             }
-        } .start();
+        });
+
+
+        btnInstallLaunch = (Button) findViewById(R.id.btn_installLaunch);
+        btnInstallLaunch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainApp.getCustomApi().silentInstall(etApkPath.getText().toString(), true, new ICustomApiCallBack() {
+                    @Override
+                    public void silentInstallCallBack(String s, boolean b) {
+                        Toast.makeText(SilentInstallSettings.this, "silentInstallCallBack :" + s + " " + b, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void silentUninstallCallBack(String s, int i) {
+                    }
+
+                });
+            }
+        });
+
+        btnUninstall = (Button) findViewById(R.id.btn_uninstall);
+        btnUninstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean ret = MainApp.getCustomApi().silentUnInstall(etPkgName.getText().toString());
+                Log.e(TAG, "btnUninstall ret " + ret);
+                if (ret) {
+                    Toast.makeText(SilentInstallSettings.this, "uninstall finish success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SilentInstallSettings.this, "uninstall finish error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    protected List<Map<String, Object>> getData() {
-        List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
-        addItem(myData, "Install: /sdcard/test.apk", KEY_1);
-        addItem(myData, "UnInstall: com.androits.gps.test.pro", KEY_2);
-        addItem(myData, "Install: /sdcard/test.apk launch", KEY_3);
-        return myData;
-    }
-
-    protected void addItem(List<Map<String, Object>> data, String name, int key) {
-        Map<String, Object> temp = new HashMap<String, Object>();
-        temp.put("title", name);
-        temp.put("key", key);
-        data.add(temp);
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Map<String, Object> map = (Map<String, Object>) l.getItemAtPosition(position);
-        int key = (int) map.get("key");
-        boolean ret = false;
+    public void onClick(View v) {
 
-        switch (key) {
-        case KEY_1:
-            File file = new File(apkPath);
-            if (!file.exists()) {
-                Toast.makeText(mContext, "no such file", Toast.LENGTH_SHORT).show();
-            } else  {
-                install_flag = 1;
-                Toast.makeText(mContext, "start install", Toast.LENGTH_SHORT).show();
-            }
-            break;
-        case KEY_2:
-            install_flag = 2;
-            Toast.makeText(mContext, "start UnInstall :", Toast.LENGTH_SHORT).show();
-            break;
-
-        case KEY_3:
-            MainApp.getCustomApi().silentInstall("/sdcard/test.apk", true, new ICustomApiCallBack() {
-                @Override
-                public void silentInstallCallBack(String s, boolean b) {
-                    Toast.makeText(mContext, "silentInstallCallBack :" + s + " " + b, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void silentUninstallCallBack(String s, int i) {
-
-                }
-            });
-            break;
-        default:
-            break;
-        }
-    }
-
-    public void install_Thread() {
-        boolean ret = false;
-        while(true) {
-            try {
-                if (1 == install_flag) {
-                    ret = MainApp.getCustomApi().silentInstall(apkPath);
-                } else if (2 == install_flag) {
-                    ret = MainApp.getCustomApi().silentUnInstall("com.androits.gps.test.pro");
-                }
-                if(0 != install_flag) {
-                    if (ret)
-                        mHandler.sendEmptyMessage(MSG_OK);
-                    else
-                        mHandler.sendEmptyMessage(MSG_ERROR);
-                }
-                install_flag = 0;
-                Thread.sleep(100);
-            } catch (Exception localException1) {
-
-            }
-        }
-    }
-
-    class InstallHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-            case  MSG_ERROR:
-                Toast.makeText(mContext, "install finish :" + "error", Toast.LENGTH_SHORT).show();
-                break;
-            case  MSG_OK:
-                Toast.makeText(mContext, "install finish :" + "Success", Toast.LENGTH_SHORT).show();
-                break;
-            }
-        }
     }
 }

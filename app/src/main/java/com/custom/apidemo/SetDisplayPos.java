@@ -17,7 +17,7 @@ public class SetDisplayPos extends ListActivity {
     private final static int KEY_POS_0 = 0;
     private final static int KEY_POS_90 = 90;
     private final static int KEY_POS_180 = 180;
-    private final static int KEY_POS_240 = 240;
+    private final static int KEY_POS_270 = 270;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class SetDisplayPos extends ListActivity {
         addItem(myData, "setdispplay pos  0", KEY_POS_0);
         addItem(myData, "setdispplay pos 90", KEY_POS_90);
         addItem(myData, "setdispplay pos 180", KEY_POS_180);
-        addItem(myData, "setdispplay pos 240", KEY_POS_240);
+        addItem(myData, "setdispplay pos 270", KEY_POS_270);
         return myData;
     }
 
@@ -59,7 +59,7 @@ public class SetDisplayPos extends ListActivity {
         case KEY_POS_180:
             MainApp.getCustomApi().setDisplayPosition(2);
             break;
-        case KEY_POS_240:
+        case KEY_POS_270:
             MainApp.getCustomApi().setDisplayPosition(3);
             break;
         default:

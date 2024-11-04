@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.custom.customapi.serialport.SerialPortDataCallBack;
@@ -25,6 +26,9 @@ public class UartSettings2 extends Activity implements SerialPortDataCallBack  {
     Button mCloseBtn;
     Button mSendMsgBtn;
     TextView mInfoView;
+
+    EditText mUartPathEt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +38,18 @@ public class UartSettings2 extends Activity implements SerialPortDataCallBack  {
         mCloseBtn = (Button)findViewById(R.id.close_serial_port);
         mSendMsgBtn = (Button)findViewById(R.id.send_msg);
         mInfoView = (TextView)findViewById(R.id.testinfo);
+        mUartPathEt = (EditText)findViewById(R.id.et_uartPath);
 
         mOpenBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mInfoView.setText("");
-                serialPortUtil = new SerialPortUtil();
-                serialPortUtil.setSerialPortDataCallBack(UartSettings2.this);
-                serialPortUtil.initSerialPort("/dev/ttyWCH0", 9600, 0);
+                String uartPath = mUartPathEt.getText().toString();
+                if(!TextUtils.isEmpty(uartPath)) {
+                    serialPortUtil = new SerialPortUtil();
+                    serialPortUtil.setSerialPortDataCallBack(UartSettings2.this);
+                    serialPortUtil.initSerialPort(uartPath, 9600, 0);
+                }
             }
         });
 
@@ -60,7 +68,7 @@ public class UartSettings2 extends Activity implements SerialPortDataCallBack  {
             @Override
             public void onClick(View v) {
                 if(serialPortUtil != null) {
-                    mInfoView.append("\nsend CMD=0123456789ABCDEF\n");
+                    mInfoView.append("\nsend:0123456789ABCDEF\n");
                     String sendTxt = "0123456789ABCDEF";
                     serialPortUtil.sendOrder(hexStringToBytes(sendTxt));
                 }
@@ -116,7 +124,7 @@ public class UartSettings2 extends Activity implements SerialPortDataCallBack  {
             String info = bytesToHexString(bytes);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
-            mInfoView.append("TIME: " + dateFormat.format(date) + "  " + info);
+            mInfoView.append("receive:" + info);
         }
     }
 

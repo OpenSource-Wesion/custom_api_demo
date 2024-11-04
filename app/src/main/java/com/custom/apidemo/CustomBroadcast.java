@@ -48,7 +48,7 @@ public class CustomBroadcast extends ListActivity {
         List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
         addItem(myData, "Update time", KEY_UPDATE_TIME);
         addItem(myData, "Silent install:/sdcard/test.apk", KEY_SILENT_INSTALL);
-        addItem(myData, "Silent uninstall:com.androits.gps.test.pro", KEY_SILENT_UNINSTALL);
+        addItem(myData, "Silent uninstall:com.ayst.stresstest", KEY_SILENT_UNINSTALL);
         addItem(myData, "Reboot", KEY_REBOOT);
         addItem(myData, "Shutdown", KEY_SHUTDOWN);
         addItem(myData, "Sleep", KEY_SLEEP);
@@ -89,7 +89,7 @@ public class CustomBroadcast extends ListActivity {
             break;
         case KEY_SILENT_UNINSTALL:
             Intent silentUninstallIntent = new Intent("com.custom.action.SILENT_UNINSTALL");
-            silentUninstallIntent.putExtra("pkgName", "com.androits.gps.test.pro");
+            silentUninstallIntent.putExtra("pkgName", "com.ayst.stresstest");
             sendBroadcast(silentUninstallIntent);
             break;
         case KEY_REBOOT:

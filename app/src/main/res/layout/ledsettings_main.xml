@@ -4,75 +4,104 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 	
-     <TextView 
-         android:id="@+id/textView_whiteLedId"
+     <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:background="#00FF00"
          android:textSize="25dp"
-         android:text="White LED"/>	 
+         android:text="COLOR 0"/>
     <RadioGroup 
-        android:id="@+id/whiteLed_GroupId"
+        android:id="@+id/color0Led_GroupId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <RadioButton
-            android:id ="@+id/w_offButtonId"
+            android:id ="@+id/color0_offButtonId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="off"/>
         <RadioButton
-            android:id ="@+id/w_onButtonId"
+            android:id ="@+id/color0_onButtonId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="on"/>
 
         <RadioButton
-            android:id ="@+id/w_timerButtonId"
+            android:id ="@+id/color0_timerButtonId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="timer"/>
         <RadioButton 
-            android:id="@+id/w_heartbeatButtonId"
+            android:id="@+id/color0_heartbeatButtonId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="heartbeat"/>
      </RadioGroup>
-     <TextView 
-         android:id="@+id/textView_redLedId"
+
+     <TextView
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:background="#00FF00"
          android:textSize="25dp"
          android:layout_marginTop="10dp"
-         android:text="Red LED"/>	 
+         android:text="COLOR 1"/>
      <RadioGroup 
-        android:id="@+id/redLed_GroupId"
+        android:id="@+id/color1Led_GroupId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
          <RadioButton
-             android:id ="@+id/r_offButtonId"
+             android:id ="@+id/color1_offButtonId"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="off"/>
          <RadioButton
-             android:id ="@+id/r_onButtonId"
+             android:id ="@+id/color1_onButtonId"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="on"/>
 
          <RadioButton
-             android:id="@+id/r_timerButtonId"
+             android:id="@+id/color1_timerButtonId"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="timer"/>
         <RadioButton 
-            android:id="@+id/r_heartbeatButtonId"
+            android:id="@+id/color1_heartbeatButtonId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="heartbeat"/>
-
      </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:layout_marginTop="10dp"
+        android:text="COLOR 2"/>
+    <RadioGroup
+        android:id="@+id/color2Led_GroupId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RadioButton
+            android:id ="@+id/color2_offButtonId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="off"/>
+        <RadioButton
+            android:id ="@+id/color2_onButtonId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="on"/>
+        <RadioButton
+            android:id="@+id/color2_timerButtonId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="timer"/>
+        <RadioButton
+            android:id="@+id/color2_heartbeatButtonId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="heartbeat"/>
+    </RadioGroup>
 
 </LinearLayout>

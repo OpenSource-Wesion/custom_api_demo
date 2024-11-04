@@ -39,7 +39,7 @@ public class MainActivity extends ListActivity {
         addItem(myData, "InstallPackage", new Intent(this, InstallPackageSettings.class));
         addItem(myData, "SetDisplayPos", new Intent(this, SetDisplayPos.class));
         addItem(myData, "StatusBar & NaviBar", new Intent(this, StatusNaviBarSettings.class));
-        addItem(myData, "Broadcast", new Intent(this, CustomBroadcast.class));
+        addItem(myData, "Broadcast interface", new Intent(this, CustomBroadcast.class));
         return myData;
     }
 

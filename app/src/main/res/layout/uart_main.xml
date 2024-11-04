@@ -9,13 +9,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="UART Path:" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/et_uartPath"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="/dev/ttyWCH0" >
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
         <Button
             android:id="@+id/open_serial_port"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
 			android:textAllCaps="false"
-            android:text="open /dev/ttyWCH0" >
+            android:text="open serial port" >
         </Button>
 
         <Button
@@ -42,9 +63,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical" >
-
-
-
         <ScrollView
             android:id="@+id/scroller"
             android:layout_width="match_parent"
