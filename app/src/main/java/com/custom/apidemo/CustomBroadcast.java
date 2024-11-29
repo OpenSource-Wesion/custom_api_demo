@@ -135,7 +135,7 @@ public class CustomBroadcast extends ListActivity {
             sendBroadcast(disPlayPosIntent);
             break;
         case KEY_SET_SYSPROP:
-            Intent setSysPropIntent = new Intent("com.custom.action.SET_SYSPROPS");
+            Intent setSysPropIntent = new Intent("com.custom.action.SET_SYSPROP");
             setSysPropIntent.putExtra("name", "persist.sys.customAPITest");
             setSysPropIntent.putExtra("value", "customAPI");
             sendBroadcast(setSysPropIntent);

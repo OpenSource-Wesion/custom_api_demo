@@ -40,7 +40,7 @@ public class I2cSettings extends Activity implements OnClickListener {
                 if(isInteger(bus) && isInteger(addr) && isInteger(reg)) {
                     int ret = MainApp.getCustomApi().i2cReadByteData(Integer.valueOf(bus), Integer.valueOf(addr), Integer.valueOf(reg));
                     etValue.setText(String.valueOf(ret));
-                    if(ret > 0) {
+                    if(ret >= 0) {
                         tvResult.setText("read success");
                     } else {
                         tvResult.setText("read failed");
@@ -62,7 +62,7 @@ public class I2cSettings extends Activity implements OnClickListener {
                     MainApp.getCustomApi().i2cWriteByteData(Integer.valueOf(bus), Integer.valueOf(addr), Integer.valueOf(reg), Integer.valueOf(val));
                     int ret = MainApp.getCustomApi().i2cReadByteData(Integer.valueOf(bus), Integer.valueOf(addr), Integer.valueOf(reg));
                     etValue.setText(String.valueOf(ret));
-                    if(ret > 0 && (ret == Integer.valueOf(val))) {
+                    if(ret >= 0 && (ret == Integer.valueOf(val))) {
                         tvResult.setText("write success");
                     } else {
                         tvResult.setText("write failed");

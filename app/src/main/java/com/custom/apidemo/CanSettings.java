@@ -20,8 +20,8 @@ public class CanSettings extends Activity {
     private Button mCloseBtn;
     private Button mSendMsgBtn;
     private TextView mInfoView;
-    private CustomCan customCan0 = new CustomCan(this);
-    private CustomCan customCan1 = new CustomCan(this);
+    private CustomCan customCan0 = null;
+    private CustomCan customCan1 = null;
     private MyThread myThread;
     private String CanStr;
 
@@ -29,6 +29,9 @@ public class CanSettings extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.can_main);
+        Log.e(TAG, "onCreate");
+
+        customCan1 = new CustomCan(this);
         customCan1.openCan("can1", "25000");
 
         mOpenBtn = (Button)findViewById(R.id.open_can);
@@ -39,6 +42,15 @@ public class CanSettings extends Activity {
         mOpenBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(customCan0 != null) {
+                    customCan0.closeCan();
+                    customCan0 = null;
+                }
+                if(myThread != null) {
+                    myThread.stopMyThread();
+                    myThread = null;
+                }
+                customCan0 = new CustomCan(CanSettings.this);
                 customCan0.openCan("can0", "25000");
                 myThread = new MyThread();
                 myThread.start();
@@ -48,7 +60,10 @@ public class CanSettings extends Activity {
         mCloseBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                customCan0.closeCan();
+                if(customCan0 != null) {
+                    customCan0.closeCan();
+                    customCan0 = null;
+                }
                 if(myThread != null) {
                     myThread.stopMyThread();
                     myThread = null;
@@ -68,64 +83,70 @@ public class CanSettings extends Activity {
                 buf[5] = (byte)0x55;
                 buf[6] = (byte)0x66;
                 buf[7] = (byte)0x77;
-                int ret = customCan0.writeCan(0x01A, 0, 0, 8, buf);
+                if(customCan0 != null) {
+                    int ret = customCan0.writeCan(0x01A, 0, 0, 8, buf);
+                }
             }
         });
     }
 
     public class MyThread extends Thread {
-        private boolean isStart = true;
+        private volatile boolean isStart = true;
         @Override
         public void run() {
             while (isStart) {
-                if(customCan1 != null) {
-                    long[] data = customCan1.readCan();
-                    if(data != null) {
-                        for (int i = 0; i < data.length; i++) {
-                            Log.e(TAG, "data[" + i + "] " + Long.toHexString(data[i]));
-                        }
-                        long canId = data[0];
-                        long canEff = data[1];
-                        long canRtr = data[2];
-                        long canLen = data[3];
-                        Log.e(TAG, "canId " + Long.toHexString(canId));
-                        Log.e(TAG, "canEff " + Long.toHexString(canEff));
-                        Log.e(TAG, "canRtr " + Long.toHexString(canRtr));
-                        Log.e(TAG, "canLen " + Long.toHexString(canLen));
-                        long[] canData = Arrays.copyOfRange(data, 4, (int) (4 + canLen));
-                        CanStr = "can RX ";
-                        CanStr += (canEff == 0) ? "S " : "E ";
-                        CanStr += (canRtr == 0) ? "-  " : "R  ";
-                        String canIdStr = Long.toHexString(canId);
-                        if (canEff == 0) {
-                            for (int i = 0; i < 3 - canIdStr.length(); i++) {
-                                canIdStr = '0' + canIdStr;
+                try {
+                    if (customCan1 != null) {
+                        long[] data = customCan1.readCan();
+                        if (data != null) {
+                            for (int i = 0; i < data.length; i++) {
+                                Log.e(TAG, "data[" + i + "] " + Long.toHexString(data[i]));
                             }
-                        } else {
-                            for (int i = 0; i < 8 - canIdStr.length(); i++) {
-                                canIdStr = '0' + canIdStr;
+                            long canId = data[0];
+                            long canEff = data[1];
+                            long canRtr = data[2];
+                            long canLen = data[3];
+                            Log.e(TAG, "canId " + Long.toHexString(canId));
+                            Log.e(TAG, "canEff " + Long.toHexString(canEff));
+                            Log.e(TAG, "canRtr " + Long.toHexString(canRtr));
+                            Log.e(TAG, "canLen " + Long.toHexString(canLen));
+                            long[] canData = Arrays.copyOfRange(data, 4, (int) (4 + canLen));
+                            CanStr = "can RX ";
+                            CanStr += (canEff == 0) ? "S " : "E ";
+                            CanStr += (canRtr == 0) ? "-  " : "R  ";
+                            String canIdStr = Long.toHexString(canId);
+                            if (canEff == 0) {
+                                for (int i = 0; i < 3 - canIdStr.length(); i++) {
+                                    canIdStr = '0' + canIdStr;
+                                }
+                            } else {
+                                for (int i = 0; i < 8 - canIdStr.length(); i++) {
+                                    canIdStr = '0' + canIdStr;
+                                }
                             }
-                        }
-                        CanStr = CanStr + canIdStr + "   [" + Long.toString(canLen) + "]  ";
-                        for (int i = 0; i < canLen; i++) {
-                            String hex = Long.toHexString(canData[i]);
-                            hex = (hex.length() == 1) ? ('0' + hex) : hex;
-                            CanStr = CanStr + ' ' + hex;
-                        }
-                        CanStr = CanStr.toUpperCase();
-                        CanStr += '\n';
-                        Log.e(TAG, "Can RX:"  + CanStr);
+                            CanStr = CanStr + canIdStr + "   [" + Long.toString(canLen) + "]  ";
+                            for (int i = 0; i < canLen; i++) {
+                                String hex = Long.toHexString(canData[i]);
+                                hex = (hex.length() == 1) ? ('0' + hex) : hex;
+                                CanStr = CanStr + ' ' + hex;
+                            }
+                            CanStr = CanStr.toUpperCase();
+                            CanStr += '\n';
+                            Log.e(TAG, "Can RX:" + CanStr);
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Date date = new Date();
-                                mInfoView.setText(dateFormat.format(date) + " " + CanStr);
-                            }
-                        });
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date date = new Date();
+                                    mInfoView.setText(dateFormat.format(date) + " " + CanStr);
+                                }
+                            });
 
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -136,10 +157,18 @@ public class CanSettings extends Activity {
 
     protected void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "onDestroy");
         if (myThread != null) {
             myThread.stopMyThread();
             myThread = null;
         }
-        customCan1.closeCan();
+        if(customCan0 != null) {
+            customCan0.closeCan();
+            customCan0 = null;
+        }
+        if(customCan1 != null) {
+            customCan1.closeCan();
+            customCan1 = null;
+        }
     }
 }
